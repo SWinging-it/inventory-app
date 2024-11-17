@@ -1,10 +1,10 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const path = require('path');
+const path = require("path");
+const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: path.join(__dirname, 'db.sqlite'),
-    logging: false
+  dialect: "sqlite",
+  logging: false,
+  storage: path.join(__dirname, "db.sqlite"),
 });
 
-module.exports = {sequelize}
+module.exports = sequelize;

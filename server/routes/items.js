@@ -1,7 +1,9 @@
 const express = require("express");
-const router = express.Router();
+const { Item } = require("../models");
 
-// different model routers
-router.use("/items", require("./items"));
+const router = express.Router();
+router.use(express.json());
+
+// Define your routes here
 
 module.exports = router;
