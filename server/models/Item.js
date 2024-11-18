@@ -8,13 +8,13 @@ Item.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true // Users will search for items by name, so name must be unique
     },
     price: {
       type: DataTypes.NUMBER,
       allowNull: false,
       validate: {
-        isNumeric: true
+        isNumeric: true // Price has to be a number, but allow for decimals
       }
     },
     description: {
@@ -28,7 +28,7 @@ Item.init(
     image: {
       type: DataTypes.STRING,
       validate: {
-        isUrl: true
+        isUrl: true // All images in seed data are URLs, so validate image entry is a URL
       }
     }
   },

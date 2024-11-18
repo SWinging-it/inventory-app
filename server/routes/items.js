@@ -5,16 +5,21 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
 
-// Define your routes here
+// Get all items and return OK status. If any errors occur or no items exist, throw the error.
 router.get('/', async (req, res) => {
     try {
         const items = await Item.findAll();
+        if (!items) {
+            res.status(404).json({error: "No items found"});
+            return;
+        }
         res.status(200).json(items);
     } catch (error){
         next(error);
     }
 });
 
+// Get the specified item from parameters and return OK status. If any errors occur or item doesn't exist, throw the error.
 router.get('/:id', async (req, res) => {
     try {
         const item = await Item.findByPk(req.params.id);
