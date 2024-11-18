@@ -7,9 +7,8 @@ You are a team of developers for an e-commerce company. The Engineering team is 
 ## Getting Started
 
 1. `npm install`
-2. `npm run seed`
-3. `npm run server-dev`
-4. In a seperate terminal, `npm run client-dev`
+2. `npm run server-dev`
+3. In a seperate terminal, `npm run client-dev`
 
 ## Inventory App “Tiers”
 
@@ -27,6 +26,8 @@ Your team should strive to finish at least the first 4 tiers (a CRUD application
 - As a User, I want to view any individual item
   - Express Route to GET one Item
   - Front-end view for one item (click to see)
+
+Once you have defined your model, `npm run seed` to populate the table.
 
 ### Tier II: Adding an Item
 
