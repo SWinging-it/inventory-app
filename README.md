@@ -58,3 +58,4 @@ Once you have defined your model, `npm run seed` to populate the table.
 - As a User, I want to add items to a cart and purchase
 - As a User, I want to use the application on a mobile browser
 - As an Admin, I want all Add and Edit item requests to have server-side validations
+# my-inventory
