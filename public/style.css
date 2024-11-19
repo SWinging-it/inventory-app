@@ -14,3 +14,21 @@ body {
 img {
   max-width: 100%;
 }
+
+button{
+  border-color: black;
+}
+
+.singleViewImg{
+  width: 50%;
+  height: 50%;
+}
+
+.singleViewContainer{
+  align-items: center;
+  align-self: auto;
+  border-radius: 10px;
+  border: 1px;
+  border-style: solid;
+  padding: 20px;
+}
