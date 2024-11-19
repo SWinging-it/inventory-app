@@ -9,8 +9,8 @@ const ItemFrame = ({ item }) => {
         <a href={`?itemId=${item.id}`} className="item-link"> {/* Pass clicked item id (you can see it in the url when clicked) through to the single item view page to display that particular item*/}
         <div className="image-container">
         <img 
-          src="https://via.placeholder.com/150" 
-          alt={item.name} 
+          src={item.image}
+
           className="item-image" 
         />
       </div>
