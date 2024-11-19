@@ -21,7 +21,7 @@ const ItemFrame = ({ item }) => {
       <p>Category: {item.category}</p>
 
       {/* Display the item's price */}
-      <p>Price: {item.price}</p>
+      <p>Price: £{item.price}</p>
     </a>
     </div>
   );
