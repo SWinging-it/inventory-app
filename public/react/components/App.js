@@ -1,56 +1,117 @@
 import React, { useEffect, useState } from "react";
-//importing of components
-import SingleItemView from "./SingleItemView.jsx";
-
-// Prepend the API URL to any fetch calls.
+import ItemFrame from "./itemFrames";
+import SingleItemView from "./SingleItemView.js";
 import apiURL from "../api";
 
-//variables for setting the onClick for the singleitemview
-const mainView = 1; //main page view
-const singleView = 2; //component made
-const addView = 3; //component not made yet/someone else is making it
-const updateView = 4; //component not made yet/someone else is making it
-
-
+const mainView = 1; // Main page view
+const singleView = 2; // Single item view
+const addView = 3; // Add new item view (not yet implemented)
+const updateView = 4; // Update item view (not yet implemented)
 
 function App() {
   const [items, setItems] = useState([]);
-  const [singleItem, setSingleItem] = useState();
-  
-  
-  const [view,setView] = useState(mainView) //used to swtich between views
+  const [filteredItems, setFilteredItems] = useState([]); // To store the filtered items
+  const [selectedItem, setSelectedItem] = useState(null); // To track the clicked item
+  const [view, setView] = useState(mainView); // Used to switch between views
+  const [categories, setCategories] = useState([]); // To store categories
+  const [selectedCategory, setSelectedCategory] = useState(""); // Selected category for filtering
 
-  const exampleData = ([
-    {id:1, name:"Item A", description:"Desc", price:23, category:"Category 2"},
-    {id:2, name:"Item B", description:"Amazing product", price:56, category:"Category 1", quantity:55}
-  ])
-
-  
-
+  // Use useEffect to fetch items and categories when the component mounts
   useEffect(() => {
-    // Fetch the items
-  }, []);
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(`${apiURL}/items`); 
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setItems(data);
+          setFilteredItems(data); // Initially, show all items
+          
+          // Extract unique categories from the items
+          const uniqueCategories = [...new Set(data.map(item => item.category))];
+          setCategories(uniqueCategories); // Set categories
+        } else {
+          console.error("Fetched data is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
 
+    fetchItems(); 
+  }, []); 
 
-  return view == mainView ? ( //default main page load
+  // Function to handle item click and navigate to single view
+  const handleItemClick = (item) => {
+    setSelectedItem(item); // Store the clicked item
+    setView(singleView);   // Navigate to SingleItemView
+  };
+
+  // Function to handle category selection and filter items
+  const handleCategoryChange = (event) => {
+    const category = event.target.value;
+    setSelectedCategory(category); 
+
+    if (category === "") {
+      // If no category is selected, show all items
+      setFilteredItems(items);
+    } else {
+      // Filter items by the selected category
+      setFilteredItems(items.filter(item => item.category === category));
+    }
+  };
+
+  return (
     <>
-      <h1>Inventory App</h1>
-      <button onClick={() => setView(singleView)}> Single Item View</button>
-      <button onClick={() => setView(addView)}> New Item</button>
+      {view === mainView ? (
+        <>
+          <div className="header-container">
+            <h1>Inventory App</h1>
+          </div>
+
+          {/* Category Dropdown */}
+          <div className="category-filter">
+            <div>
+            <label htmlFor="category">Filter by Category: </label>
+            <select 
+              id="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="">All Categories</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
+            </div>
+            <button onClick={() => setView(addView)}>New Item</button>
+          </div>
+
+          <div className="inventory-container">
+            {/* Loop through filteredItems state and pass each item to ItemFrame */}
+            {filteredItems.map((item) => (
+              <ItemFrame 
+                key={item.id} 
+                item={item} 
+                onClick={() => handleItemClick(item)} // Handle item click
+              />
+            ))}
+          </div>
+        </>
+      ) : view === singleView ? (
+        <SingleItemView 
+          goToMain={() => setView(mainView)} // Function to go back to main view
+          goToUpdate={() => setView(updateView)} // Placeholder for update view
+          item={selectedItem} // Pass the selected item to SingleItemView
+        />
+      ) : view === addView ? (
+        <h1>Add View</h1> // Placeholder for Add View
+      ) : view === updateView ? (
+        <h1>Update View</h1> // Placeholder for Update View
+      ) : (
+        <h1>Error: Invalid View</h1>
+      )}
     </>
-  ) : view == singleView ? ( //loads the single page view when clicked
-    <SingleItemView 
-    goToMain={() => setView(mainView)}
-    goToUpdate={() => setView(updateView)}
-    item={exampleData[1]} //passes over the inventory item as an object
-    url={"/"}/> //placeholder till URL is defined
-  ) : view == addView ? ( //loads add new item view
-    <h1>Add View</h1>
-  ) : view == updateView ? ( //loads update page from single item view
-    <h1>Update View</h1>
-  ) :  //error message displayed if nothing detected
-    <h1>Error, please reload the page</h1>
-  
+  );
 }
 
 export default App;
