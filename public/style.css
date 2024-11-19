@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 
+
 body {
   width: 100%;
   margin: 1em auto;
@@ -11,9 +12,61 @@ body {
   text-align: center;
 }
 
+h1 {
+  text-align: center;  /* Center the text horizontally */
+}
+
 img {
   max-width: 100%;
 }
+
+
+
+.inventory-container {
+  display: flex;                   /* Enable flexbox layout */
+  flex-wrap: wrap;                 /* Allow wrapping if there are too many items to fit */
+  justify-content: center;         /* Center the items horizontally */
+  gap: 16px;                       /* Space between items */
+  padding: 20px;
+}
+
+.inventory-frame {
+  background-color: #fff;          /* White background for each frame */
+  border: 1px solid #ddd;         /* Light gray border */
+  border-radius: 12px;             /* Rounded corners with a radius of 12px */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 16px;                  /* Add some padding inside the frame */
+  width: calc(20% - 16px);                      /* Set a fixed width for each frame */
+  margin: 10px;                   /* Add some space between frames */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+  text-align: center;             /* Center-align the text */
+}
+
+.inventory-frame:hover {
+  transform: translateY(-5px);    /* Lift the frame slightly on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.inventory-frame h3 {
+  margin: 0;                      /* Remove margin around the heading */
+  font-size: 1.2rem;              /* Increase font size */
+  color: #333;                    /* Dark gray color for the name */
+}
+
+
+.inventory-frame p {
+  margin: 8px 0;                  /* Add vertical spacing between paragraphs */
+  font-size: 1rem;                /* Set a normal font size for description */
+  color: #666;                    /* Light gray color for quantity and price */
+}
+
+
+.item-link {
+  display: block;            /* Makes the anchor tag behave like a block */
+  text-decoration: none;     /* Remove underline */
+  color: inherit;            /* Inherit text color */
+}
+
 
 footer {
   display: flex;
