@@ -34,7 +34,7 @@ function App() {
 
   return view == mainView ? ( //default main page load
     <>
-      <h1>Inventory</h1>
+      <h1>Inventory App</h1>
       <button onClick={() => setView(singleView)}> Single Item View</button>
       <button onClick={() => setView(addView)}> New Item</button>
     </>
