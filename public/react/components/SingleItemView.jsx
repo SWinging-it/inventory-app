@@ -21,13 +21,19 @@ function SingleItemView({goToMain, goToUpdate, url, item}){
 
     async function deleteRequest(){
         //deletes the entry of the url given to the component
-        const response = await fetch(url, {
-            method: "DELETE"
-          });
-        //const data = await response.json();
-        return(
-            alert("Item has been deleted", goToMain())
-        )
+        try{
+            const response = await fetch(url, {
+                method: "DELETE"
+              });
+            //const data = await response.json();
+            return(
+                alert("Item has been deleted", goToMain())
+            )
+        }
+        catch(error){
+            alert("Error! Item failed to delete" + error)
+            console.error(error)
+        }
     }
 
     return(
