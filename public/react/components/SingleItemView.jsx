@@ -8,8 +8,6 @@ function SingleItemView({goToMain, goToUpdate, url, item}){
         )
     }
 
-    let params = 1;
-
     function handleClickDelete(){ //the box will automatically return TRUE if "Ok" is clicked
         if(confirm(`Are you sure you want to delete ${item.name}?`)){
             deleteRequest();
