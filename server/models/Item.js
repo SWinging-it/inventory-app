@@ -11,7 +11,7 @@ Item.init(
       unique: true // Users will search for items by name, so name must be unique
     },
     price: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DOUBLE(10,2),
       allowNull: false,
       validate: {
         isNumeric: true // Price has to be a number, but allow for decimals
