@@ -1,42 +1,120 @@
 import React, { useEffect, useState } from "react";
-import ItemFrame from "./itemFrames"; // Passed from itemFrames for each individual frame to be created for the landing page
-
-// Prepend the API URL to any fetch calls.
+import ItemFrame from "./itemFrames";
+import SingleItemView from "./SingleItemView.js";
+import AddItemForm from "./AddItem.js";
 import apiURL from "../api";
-// orignially pass data as item (object) and reference to that 
+
+const mainView = 1; // Main page view
+const singleView = 2; // Single item view
+const addView = 3; // Add new item view (not yet implemented)
+const updateView = 4; // Update item view (not yet implemented)
 
 function App() {
-  const [items, setItems] = useState([]); // items is the array, set items is used to update 
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]); // To store the filtered items
+  const [selectedItem, setSelectedItem] = useState(null); // To track the clicked item
+  const [view, setView] = useState(mainView); // Used to switch between views
+  const [categories, setCategories] = useState([]); // To store categories
+  const [selectedCategory, setSelectedCategory] = useState(""); // Selected category for filtering
 
-  {/*useEffect(() => {
-    // Fetch the items ---------------------- Needs to be in place when data is implemented -------- (look line 15-19 down for recommended logic)
-  }, []);*/}
+  // Use useEffect to fetch items and categories when the component mounts
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(`${apiURL}/items`); 
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setItems(data);
+          setFilteredItems(data); // Initially, show all items
+          
+          // Extract unique categories from the items
+          const uniqueCategories = [...new Set(data.map(item => item.category))];
+          setCategories(uniqueCategories); // Set categories
+        } else {
+          console.error("Fetched data is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchItems = async () => {
-  //     const data = await fetch('https://api.example.com/items').then(res => res.json()); // link will be to object fetched
-  //     setItems(data); // Update the items with the fetched data
-  //   };
-  
-  const exampleItems = [
-    { id: 1, name: "Sample Item A", category: "Category 1", price: "£15.00" }, // dummy data just for testing, will be deleted when data is implemented
-    { id: 2, name: "Sample Item B", category: "Category 2", price: "£25.00" },
-    { id: 3, name: "Sample Item C", category: "Category 3", price: "£5.00" },
-    { id: 4, name: "Sample Item D", category: "Category 4", price: "£30.00" },
-    { id: 5, name: "Sample Item E", category: "Category 5", price: "£30.00" }
-  ];
+    fetchItems(); 
+  }, []); 
+
+  // Function to handle item click and navigate to single view
+  const handleItemClick = (item) => {
+    setSelectedItem(item); // Store the clicked item
+    setView(singleView);   // Navigate to SingleItemView
+  };
+
+  // Function to handle category selection and filter items
+  const handleCategoryChange = (event) => {
+    const category = event.target.value;
+    setSelectedCategory(category); 
+
+    if (category === "") {
+      // If no category is selected, show all items
+      setFilteredItems(items);
+    } else {
+      // Filter items by the selected category
+      setFilteredItems(items.filter(item => item.category === category));
+    }
+  };
 
   return (
-    <div>
-      <h1>Inventory App</h1>
-      {/* <div> for inventory-container can act as the frame that refreshes*/}
-      <div className="inventory-container">
-        {/* Render the static frames, for every item in the object */}
-        {exampleItems.map((item) => ( 
-          <ItemFrame key={item.id} item={item} /> 
-        ))}
-      </div>
-    </div>
+    <>
+      {view === mainView ? (
+        <>
+          <div className="header-container">
+            <h1>Inventory App</h1>
+          </div>
+
+          {/* Category Dropdown */}
+          <div className="category-filter">
+            <div>
+            <label htmlFor="category">Filter by Category: </label>
+            <select 
+              id="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="">All Categories</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
+            </div>
+            <button className= "addItemButton" onClick={() => setView(addView)}>New Item</button>
+          </div>
+
+          <div className="inventory-container">
+            {/* Loop through filteredItems state and pass each item to ItemFrame */}
+            {filteredItems.map((item) => (
+              <ItemFrame 
+                key={item.id} 
+                item={item} 
+                onClick={() => handleItemClick(item)} // Handle item click
+              />
+            ))}
+          </div>
+        </>
+      ) : view === singleView ? (
+        <SingleItemView 
+          goToMain={() => setView(mainView)} // Function to go back to main view
+          goToUpdate={() => setView(updateView)} // Placeholder for update view
+          item={selectedItem} // Pass the selected item to SingleItemView
+        />
+      ) : view === addView ? (
+        <AddItemForm
+        categories={categories}
+        goToMain={() => setView(mainView)} // Function to go back to the main view
+        />
+      ) : view === updateView ? (
+        <h1>Update View</h1> // Placeholder for Update View
+      ) : (
+        <h1>Error: Invalid View</h1>
+      )}
+    </>
   );
 }
 

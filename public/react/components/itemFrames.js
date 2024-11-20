@@ -1,28 +1,23 @@
 import React from "react";
-import "../../style.css";// Imported CSS file
+import "../../style.css";
 
-
-const ItemFrame = ({ item }) => {
+const ItemFrame = ({ item, onClick }) => {
   return (
-    <div className="inventory-frame">
-        {/* the entire frame is clickable by wrapping it in a link */}
-        <a href={`?itemId=${item.id}`} className="item-link"> {/* Pass clicked item id (you can see it in the url when clicked) through to the single item view page to display that particular item*/}
-        <div className="image-container">
+    
+    <div className="inventory-frame" onClick={onClick}>
+      <div className="image-container">
         <img 
-          src="https://via.placeholder.com/150" 
+          src={item.image || "https://via.placeholder.com/250"} 
           alt={item.name} 
           className="item-image" 
         />
       </div>
-      {/* Display the item's name */}
+      <div className = "textForFrame">
+
       <h3>{item.name}</h3>
-
-      {/* Display the item's quantity */}
       <p>Category: {item.category}</p>
-
-      {/* Display the item's price */}
-      <p>Price: £{item.price}</p>
-    </a>
+      <p className = "price">Price: £{(item.price).toFixed(2)}</p>
+      </div>
     </div>
   );
 };
