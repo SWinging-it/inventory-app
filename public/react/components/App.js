@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ItemFrame from "./itemFrames";
 import SingleItemView from "./SingleItemView.js";
+import AddItemForm from "./AddItem.js";
 import apiURL from "../api";
 
 const mainView = 1; // Main page view
@@ -83,7 +84,7 @@ function App() {
               ))}
             </select>
             </div>
-            <button onClick={() => setView(addView)}>New Item</button>
+            <button className= "addItemButton" onClick={() => setView(addView)}>New Item</button>
           </div>
 
           <div className="inventory-container">
@@ -104,7 +105,10 @@ function App() {
           item={selectedItem} // Pass the selected item to SingleItemView
         />
       ) : view === addView ? (
-        <h1>Add View</h1> // Placeholder for Add View
+        <AddItemForm
+        categories={categories}
+        goToMain={() => setView(mainView)} // Function to go back to the main view
+        />
       ) : view === updateView ? (
         <h1>Update View</h1> // Placeholder for Update View
       ) : (

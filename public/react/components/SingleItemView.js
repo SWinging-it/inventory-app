@@ -44,7 +44,7 @@ function SingleItemView({ goToMain, goToUpdate, item }) {
           <p>Price: £{(item.price).toFixed(2)}</p>
           <div className="button-group">
             <button onClick={goToUpdate}>Update</button>
-            <button onClick={handleDelete}>Delete</button>
+            <button id = "deleteButton" onClick={handleDelete}>Delete</button>
           </div>
         </div>
       </main>

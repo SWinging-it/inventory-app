@@ -3,6 +3,7 @@ import "../../style.css";
 
 const ItemFrame = ({ item, onClick }) => {
   return (
+    
     <div className="inventory-frame" onClick={onClick}>
       <div className="image-container">
         <img 
