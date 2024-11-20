@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ItemFrame from "./itemFrames";
 import SingleItemView from "./SingleItemView.js";
 import AddItemForm from "./AddItem.js";
+import UpdateItemView from "./UpdateItemView.js"
 import apiURL from "../api";
 
 const mainView = 1; // Main page view
@@ -65,6 +66,7 @@ function App() {
     <>
       {view === mainView ? (
         <>
+        
           <div className="header-container">
             <h1>Inventory App</h1>
           </div>
@@ -110,7 +112,11 @@ function App() {
         goToMain={() => setView(mainView)} // Function to go back to the main view
         />
       ) : view === updateView ? (
-        <h1>Update View</h1> // Placeholder for Update View
+        <UpdateItemView 
+        goToMain={() => setView(mainView)}
+        goToSingle={() => setView(singleView)}
+        item={selectedItem}
+        url={apiURL}/>
       ) : (
         <h1>Error: Invalid View</h1>
       )}
