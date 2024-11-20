@@ -67,24 +67,4 @@ router.post('/', [
 });
 
 
-// POST route to create a new item
-// router.post('/items', async (req, res) => {
-//     const { name, price, description, category, imageUrl } = req.body;
-
-//     res.status(201).json({ success: true });
-  
-//     try {
-//       const newItem = await Item.create({ 
-//         name, 
-//         price, 
-//         description, 
-//         category, 
-//         imageUrl 
-//       });
-//       res.status(201).json(newItem); // Successfully created item
-//     } catch (error) {
-//       console.error('Error adding item:', error);
-//       res.status(500).json({ error: "Failed to add item." });
-//     }
-//   });
-// module.exports = router;
+module.exports = router;
