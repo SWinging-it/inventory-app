@@ -26,7 +26,7 @@ Item.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    image: {
+    image: { // Item doesn't NEED an image, so let alowNull default to true
       type: DataTypes.STRING,
       validate: {
         isUrl: true // All images in seed data are URLs, so validate image entry is a URL
