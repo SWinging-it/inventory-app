@@ -13,7 +13,7 @@ const AddItemForm = ({ categories, goToMain }) => {
     e.preventDefault();
     console.log(apiURL)
     // Validate inputs
-    if (!name || (!category && !customCategory) || !price || !imageUrl || !description) {
+    if (!name || (!category && !customCategory) || !price || !description) {
       alert("Please fill out all fields.");
       return;
     }
@@ -119,7 +119,7 @@ const AddItemForm = ({ categories, goToMain }) => {
             <label htmlFor="imageUrl">Image URL:</label>
             <input
               type="url"
-              id="imageUrl"
+              id="image"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Enter image URL"
