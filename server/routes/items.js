@@ -1,4 +1,5 @@
 const express = require("express");
+const {check, validationResult} = require('express-validator');
 const { Item } = require("../models");
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.get('/', async (req, res, next) => {
         }
         res.status(200).json(items);
     } catch (error){
+        res.status(500);
         next(error);
     }
 });
@@ -29,6 +31,37 @@ router.get('/:id', async (req, res, next) => {
         }
         res.status(200).json(item);
     } catch (error){
+        res.status(500);
+        next(error);
+    }
+});
+
+// Create a new Item from Item model and return Successful Creation status + created item. If any errors occur, throw the error.
+router.post('/', [
+    check('name').trim().notEmpty().withMessage('name cannot be empty').isString().withMessage('name must be a string'),
+    check('price').trim().notEmpty().withMessage('price cannot be empty').isNumeric().withMessage('price must be a number'),
+    check('description').trim().notEmpty().withMessage('description cannot be empty').isString().withMessage('description must be a string'),
+    check('category').trim().notEmpty().withMessage('category cannot be empty').isString().withMessage('category must be a string')], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        const item = await Item.create(req.body);
+        res.status(201).json(item);
+    } catch (error){
+        if (error.name === "SequelizeUniqueConstraintError"){
+            return res.status(400).json({"errors": [
+        {
+            "type": "field",
+            "value": req.body.name,
+            "msg": "name must be unique",
+            "path": "name",
+            "location": "body"
+        }
+    ]});
+        }
+        res.status(500);
         next(error);
     }
 });
