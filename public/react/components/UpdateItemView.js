@@ -67,8 +67,8 @@ function UpdateItemView({ goToMain, goToSingle, item , categories}) {
       name !== item.name ||
       description !== item.description ||
       price !== item.price ||
-      category !== item.category ||
-      imageUrl !== item.image;
+      category !== item.category;
+      // imageUrl !== item.image;
 
     if (!hasChanges || confirm("Unsaved changes will be lost. Continue?")) {
       callback();
@@ -77,7 +77,11 @@ function UpdateItemView({ goToMain, goToSingle, item , categories}) {
 
   return (
     <>
-      <h1 onClick={goToMain} className="clickable-header">Inventory App</h1>
+      <h1 
+        onClick={() => handleExit(goToSingle)} 
+        className="clickable-header">
+        Inventory App
+      </h1>
       <div className="form-container">
         <h2>Update Item</h2>
         <form onSubmit={handleSubmit}>
