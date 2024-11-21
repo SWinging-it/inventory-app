@@ -5,7 +5,7 @@ const AddItemForm = ({ categories, goToMain }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");  // Still using imageUrl state for user input
   const [customCategory, setCustomCategory] = useState("");
   const [description, setDescription] = useState(""); 
 
@@ -23,7 +23,6 @@ const AddItemForm = ({ categories, goToMain }) => {
       return;
     }
 
-
     // Determine the category (custom or selected)
     const finalCategory = customCategory.trim() ? customCategory : category;
 
@@ -32,7 +31,7 @@ const AddItemForm = ({ categories, goToMain }) => {
       price: parseFloat(price).toFixed(2), // Convert to a valid price format
       description, // Include description in the new item data
       category: finalCategory,
-      imageUrl,
+      image: imageUrl, // Use 'image' as the field name to match your database column
     };
 
     console.log(newItem)
@@ -80,6 +79,29 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Enter item price"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter item description"
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label htmlFor="category">Category:</label>
             <select
               id="category"
@@ -104,37 +126,13 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Enter item price"
-              required
-            />
-          </div>
-
-          <div className="form-group">
             <label htmlFor="imageUrl">Image URL:</label>
             <input
               type="url"
-              id="image"
+              id="imageUrl"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Enter image URL"
-              required
-            />
-          </div>
-
-          {/* New Description Input */}
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter item description"
               required
             />
           </div>
