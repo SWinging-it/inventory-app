@@ -19,6 +19,7 @@ function SingleItemView({ goToMain, goToUpdate, item }) {
         if (response.ok) {
           alert(`${item.name} has been deleted.`);
           goToMain();
+          window.location.reload();
         } else {
           alert("Failed to delete the item.");
         }
