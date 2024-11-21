@@ -338,6 +338,10 @@ button[type="button"]:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  word-wrap: break-word; /* Forces word breaks for long words */
+  overflow-wrap: break-word; /* Ensures compatibility across browsers */
+  max-width: 100%;
+  word-break: break-word; /* Ensures the word breaks correctly */
 }
 
 .singleViewImg {
