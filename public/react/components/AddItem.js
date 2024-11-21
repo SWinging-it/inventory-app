@@ -5,7 +5,7 @@ const AddItemForm = ({ categories, goToMain }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");  // Still using imageUrl state for user input
   const [customCategory, setCustomCategory] = useState("");
   const [description, setDescription] = useState(""); 
 
@@ -13,7 +13,7 @@ const AddItemForm = ({ categories, goToMain }) => {
     e.preventDefault();
     console.log(apiURL)
     // Validate inputs
-    if (!name || (!category && !customCategory) || !price || !imageUrl || !description) {
+    if (!name || (!category && !customCategory) || !price || !description) {
       alert("Please fill out all fields.");
       return;
     }
@@ -23,7 +23,6 @@ const AddItemForm = ({ categories, goToMain }) => {
       return;
     }
 
-
     // Determine the category (custom or selected)
     const finalCategory = customCategory.trim() ? customCategory : category;
 
@@ -32,7 +31,7 @@ const AddItemForm = ({ categories, goToMain }) => {
       price: parseFloat(price).toFixed(2), // Convert to a valid price format
       description, // Include description in the new item data
       category: finalCategory,
-      imageUrl,
+      image: imageUrl, // Use 'image' as the field name to match your database column
     };
 
     console.log(newItem)
@@ -51,6 +50,7 @@ const AddItemForm = ({ categories, goToMain }) => {
         alert("Item added successfully!");
         console.log("New item added:", data); // Log the new item
         goToMain(); // Navigate back to the main view
+        window.location.reload();
       } else {
         const errorData = await response.json();
         alert(`Failed to add item: ${errorData.error}`);
@@ -80,6 +80,29 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Enter item price"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter item description"
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label htmlFor="category">Category:</label>
             <select
               id="category"
@@ -104,18 +127,6 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Enter item price"
-              required
-            />
-          </div>
-
-          <div className="form-group">
             <label htmlFor="imageUrl">Image URL:</label>
             <input
               type="url"
@@ -123,18 +134,6 @@ const AddItemForm = ({ categories, goToMain }) => {
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Enter image URL"
-              required
-            />
-          </div>
-
-          {/* New Description Input */}
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter item description"
               required
             />
           </div>
