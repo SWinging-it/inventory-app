@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import apiURL from "../api";
 import "../../style.css";
+import { json } from "sequelize";
 //http://localhost:3000/api/items/:id
 
 function UpdateItemView({goToMain, goToSingle, item, url}){
@@ -10,7 +11,7 @@ function UpdateItemView({goToMain, goToSingle, item, url}){
 
     function handleClickEdit(){
         if(confirm(`Are you sure you want to edit ${item.name}?`)){
-            updateRequest2(); //runs update request if true
+            updateRequest(); //runs update request if true
         }
         else{ //runs if FALSE is returned from the confirm box
             //goToSingle() //goes back to single item view
@@ -19,30 +20,12 @@ function UpdateItemView({goToMain, goToSingle, item, url}){
         }
     }
 
-    async function updateRequest(){
-        try{
-            const response = await fetch(url, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    formData
-                })
-              })
-              return(
-                alert("Item has been updated", goToMain()) //returns to main page once DB has been updated
-            )
-        }
-        catch(error){ //error catching
-            alert("Error! Item failed to edit" + error)
-            console.error(error)
-        }
-    }
-
-    async function updateRequest2() {
+    async function updateRequest() {
         try {
             const response = await fetch(`${apiURL}/items/${item.id}`, {
               method: "PUT",
               headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
               },
               body: JSON.stringify(formData),
             });
@@ -71,7 +54,7 @@ function UpdateItemView({goToMain, goToSingle, item, url}){
     const onImageChange = e => setFormData({...formData, image: e.target.value})
 
     function handleClickHomeButton(){
-        if(item == formData){
+        if(JSON.stringify(item) == JSON.stringify(formData)){
             goToMain();
         }
         else if(confirm("Unsaved changes, are you sure you want to exit?")){
@@ -83,11 +66,11 @@ function UpdateItemView({goToMain, goToSingle, item, url}){
     }
 
     function handleClickH1(){
-        if(item == formData){
-            goToSingle()
+        if(JSON.stringify(item) == JSON.stringify(formData)){
+            goToSingle();
         }
         else if(confirm("Unsaved changes, are you sure you want to exit?")){
-            goToSingle()
+            goToSingle();
         }
         else{
             return;

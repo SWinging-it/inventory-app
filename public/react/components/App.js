@@ -68,7 +68,7 @@ function App() {
         <>
         
           <div className="header-container">
-            <h1>Inventory App</h1>
+            <h1 data-testid="mainTitle">Inventory App</h1>
           </div>
 
           {/* Category Dropdown */}
