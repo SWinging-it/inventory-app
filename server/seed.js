@@ -8,4 +8,8 @@ async function seed() {
   console.log("Database populated");
 }
 
-seed();
+if (typeof require !== 'undefined' && require.main === module) {
+  seed();
+}
+
+module.exports = seed;
