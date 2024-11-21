@@ -1,5 +1,7 @@
 /* ---------- Global Styles ---------- */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -13,40 +15,100 @@ body {
   color: #333;
 }
 
+html, body {
+  height: 100%;
+}
+
+
 /* ---------- Header ---------- */
 h1 {
   text-align: center;
   font-size: 2.5rem;
   color: #333;
-  margin: 0 auto;
-  padding: 10px 20px;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 50%, #f4f4f4 100%);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: inline-block;
+  margin: 0 auto; /* removes any default margin */
+  padding: 10px 20px; /* adds inner spacing */
+  border: 2px solid #ddd; /* border */
+  border-radius: 12px; /* rounds the corners of the border */
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 50%, #f4f4f4 100%); /* applies gradient */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 0 horizontal offset, 4px vertical offset, 6px blur radius, rgba(0, 0, 0, 0.1) sets the shadow color as a transparent black.*/
+  display: inline-block; /* only takes up width of its content*/
 }
 
+/* Centering the header with title and search bar */
 .header-container {
+  display: flex;
+  flex-direction: column; /* stack elements vertically */
+  align-items: center; /* center elements horizontally */
+  gap: 20px; /* adds spacing between elements */
+  padding: 20px;
+}
+
+.navBar {
+  display: flex;
+  justify-content: space-between; /* ensures space between the items */
+  align-items: center; /* center components vertically */
+  padding: 20px;
+  background-color: #f4f4f4; /* optional background color */
   width: 100%;
+}
+
+.search-bar-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 20px;
-  margin-bottom: 20px;
+  width: 70%; /* shorten the width of the search bar */
+  max-width: 400px; /* limit the maximum width */
+  margin: 0 auto; /* center the search bar container within the navbar */
+}
+
+.category-filter {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* adds space between category buttons */
+  flex-wrap: nowrap; /* ensures buttons remain in a single row */
+  width: 80%; /* keeps the width reduced */
+  max-width: 400px; /* restricts maximum width */
+}
+
+.addItemButton {
+  padding: 10px 20px;
+  background-color: #00796b;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-left: auto; /* pushes the button to the right */
+}
+
+.addItemButton:hover {
+  background-color: #004d40;
 }
 
 /* ---------- Footer ---------- */
 footer {
   display: flex;
   justify-content: space-around;
-  border-top: 0.3em solid black;
+  border-top: 0.3em solid black;/* border rounded and solid for footer*/
   background-color: white;
+  background-color: white;
+  padding: 10px 20px; /* padding within the footer */
+  text-align: center; /* aligns text to the centre */
 }
 
 .footer_content {
   text-align: justify;
   list-style-type: none;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ensures the wrapper takes up at least the full height */
+}
+
+.mainForFooter {
+  flex: 1; /* makes sure footer stays at the botton of the page */
+  padding: 20px;
+  background-color: #f9f9f9;
 }
 
 /* ---------- Image Styling ---------- */
@@ -64,44 +126,58 @@ img {
 }
 
 /* ---------- Inventory Items ---------- */
+/* ---------- Inventory Items ---------- */
 .inventory-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
   gap: 20px;
   padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  /* Responsive grid layout with minimum frame width of 220px */
 }
 
 .inventory-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 12px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   padding: 16px;
-  width: calc(20% - 20px);
+  width: 100%; /* Auto-fit to grid column size */
+  box-sizing: border-box; /* Includes padding and border in sizing */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  word-wrap: break-word; /* Forces word breaks for long words */
+  overflow-wrap: break-word; /* Ensures compatibility across browsers */
+  max-width: 100%;
+  word-break: break-word; /* Ensures the word breaks correctly */
 }
 
 .inventory-frame:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
+  border-color: #ccc;
 }
 
-.inventory-frame h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.inventory-frame img {
+  flex-shrink: 0;
+  width: 100%; /* Takes full width of the frame */
+  max-height: 150px; /* Ensures consistent height for images */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.inventory-frame h3, 
+.inventory-frame p {
+  max-width: 100%;
+  overflow: hidden; /* Hides excess content */
+  text-overflow: ellipsis; /* Adds "..." to truncated text (if desired) */
 }
 
 .inventory-frame p {
-  margin: 6px 0;
-  font-size: 0.9rem;
   color: #666;
 }
 
@@ -111,11 +187,41 @@ img {
   color: #e67e22;
 }
 
-.item-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
+.textForFrame {
+  margin-top: auto; /* Push remaining content to the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
+
+
+
+
+/* ---------- Responsive Adjustments ---------- */
+@media (max-width: 768px) {
+  .inventory-container {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .inventory-frame img {
+    max-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inventory-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .inventory-frame {
+    padding: 10px;
+  }
+
+  .inventory-frame img {
+    max-height: 100px;
+  }
+}
+
 
 /* ---------- Delete Button ---------- */
 #deleteButton {
@@ -195,11 +301,11 @@ button[type="submit"] {
   color: white;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover { /* submit button for update */
   background-color: #218838;
 }
 
-button[type="button"] {
+button[type="button"] { /* cancel button for update */
   background-color: #dc3545;
   color: white;
 }
@@ -306,4 +412,3 @@ button[type="button"]:hover {
   margin-top: auto;
   text-align: center;
 }
-

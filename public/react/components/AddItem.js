@@ -5,14 +5,14 @@ const AddItemForm = ({ categories, goToMain }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); // Image URL input is still present, but validation removed
   const [customCategory, setCustomCategory] = useState("");
-  const [description, setDescription] = useState(""); 
+  const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(apiURL)
-    // Validate inputs
+
+    // Validate inputs (except imageUrl)
     if (!name || (!category && !customCategory) || !price || !description) {
       alert("Please fill out all fields.");
       return;
@@ -23,7 +23,6 @@ const AddItemForm = ({ categories, goToMain }) => {
       return;
     }
 
-
     // Determine the category (custom or selected)
     const finalCategory = customCategory.trim() ? customCategory : category;
 
@@ -32,10 +31,8 @@ const AddItemForm = ({ categories, goToMain }) => {
       price: parseFloat(price).toFixed(2), // Convert to a valid price format
       description, // Include description in the new item data
       category: finalCategory,
-      imageUrl,
+      image: imageUrl || null, // Allow empty image URLs by setting them to null
     };
-
-    console.log(newItem)
 
     try {
       const response = await fetch(`${apiURL}/items`, {
@@ -51,6 +48,7 @@ const AddItemForm = ({ categories, goToMain }) => {
         alert("Item added successfully!");
         console.log("New item added:", data); // Log the new item
         goToMain(); // Navigate back to the main view
+        window.location.reload();
       } else {
         const errorData = await response.json();
         alert(`Failed to add item: ${errorData.error}`);
@@ -80,6 +78,29 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="price">Price:</label>
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Enter item price"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter item description"
+              required
+            />
+          </div>
+
+          <div className="form-group">
             <label htmlFor="category">Category:</label>
             <select
               id="category"
@@ -104,38 +125,13 @@ const AddItemForm = ({ categories, goToMain }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="Enter item price"
-              required
-            />
-          </div>
-
-          <div className="form-group">
             <label htmlFor="imageUrl">Image URL:</label>
             <input
               type="url"
-              id="image"
+              id="imageUrl"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="Enter image URL"
-              required
-            />
-          </div>
-
-          {/* New Description Input */}
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter item description"
-              required
+              placeholder="Enter image URL (optional)"
             />
           </div>
 
