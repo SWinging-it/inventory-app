@@ -1,5 +1,6 @@
 import React from "react";
 import "../../style.css";
+import apiURL from "../api";
 
 function SingleItemView({ goToMain, goToUpdate, item }) {
   if (!item) {
@@ -14,7 +15,7 @@ function SingleItemView({ goToMain, goToUpdate, item }) {
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
       try {
-        const response = await fetch(`/api/items/${item.id}`, { method: "DELETE" });
+        const response = await fetch(`${apiURL}/items/${item.id}`, { method: "DELETE" });
         if (response.ok) {
           alert(`${item.name} has been deleted.`);
           goToMain();
@@ -44,7 +45,7 @@ function SingleItemView({ goToMain, goToUpdate, item }) {
           <p>Price: £{(item.price).toFixed(2)}</p>
           <div className="button-group">
             <button onClick={goToUpdate}>Update</button>
-            <button onClick={handleDelete}>Delete</button>
+            <button id = "deleteButton" onClick={handleDelete}>Delete</button>
           </div>
         </div>
       </main>

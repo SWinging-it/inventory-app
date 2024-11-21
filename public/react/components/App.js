@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ItemFrame from "./itemFrames";
 import SingleItemView from "./SingleItemView.js";
+import AddItemForm from "./AddItem.js";
+import UpdateItemView from "./UpdateItemView.js";
 import apiURL from "../api";
 
 const mainView = 1; // Main page view
 const singleView = 2; // Single item view
-const addView = 3; // Add new item view (not yet implemented)
-const updateView = 4; // Update item view (not yet implemented)
+const addView = 3; // Add new item view
+const updateView = 4; // Update item view
 
 function App() {
   const [items, setItems] = useState([]);
@@ -15,17 +17,19 @@ function App() {
   const [view, setView] = useState(mainView); // Used to switch between views
   const [categories, setCategories] = useState([]); // To store categories
   const [selectedCategory, setSelectedCategory] = useState(""); // Selected category for filtering
+  const [searchQuery, setSearchQuery] = useState(""); // Search input
+
 
   // Use useEffect to fetch items and categories when the component mounts
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch(`${apiURL}/items`); 
+        const response = await fetch(`${apiURL}/items`);
         const data = await response.json();
         if (Array.isArray(data)) {
           setItems(data);
           setFilteredItems(data); // Initially, show all items
-          
+
           // Extract unique categories from the items
           const uniqueCategories = [...new Set(data.map(item => item.category))];
           setCategories(uniqueCategories); // Set categories
@@ -37,19 +41,19 @@ function App() {
       }
     };
 
-    fetchItems(); 
-  }, []); 
+    fetchItems();
+  }, []);
 
   // Function to handle item click and navigate to single view
   const handleItemClick = (item) => {
     setSelectedItem(item); // Store the clicked item
-    setView(singleView);   // Navigate to SingleItemView
+    setView(singleView); // Navigate to SingleItemView
   };
 
   // Function to handle category selection and filter items
   const handleCategoryChange = (event) => {
     const category = event.target.value;
-    setSelectedCategory(category); 
+    setSelectedCategory(category);
 
     if (category === "") {
       // If no category is selected, show all items
@@ -60,6 +64,25 @@ function App() {
     }
   };
 
+  // Function to handle search input
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    // Filter items by name and category
+    setFilteredItems(items.filter(item => {
+      const matchesName = item.name.toLowerCase().includes(query.toLowerCase());
+      const matchesCategory = item.category.toLowerCase().includes(query.toLowerCase());
+      return matchesName || matchesCategory;
+    }));
+  
+    const handleNewItemAdded = (newItem) => {
+      setItems((prevItems) => [...prevItems, newItem]);
+      setFilteredItems((prevItems) => [...prevItems, newItem]);
+    };
+    
+  };
+
   return (
     <>
       {view === mainView ? (
@@ -68,22 +91,33 @@ function App() {
             <h1>Inventory App</h1>
           </div>
 
-          {/* Category Dropdown */}
-          <div className="category-filter">
-            <div>
-            <label htmlFor="category">Filter by Category: </label>
-            <select 
-              id="category"
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-            >
-              <option value="">All Categories</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>{category}</option>
-              ))}
-            </select>
+          <div className="navBar">
+            {/* Category Dropdown */}
+            <div className="category-filter">
+              <label htmlFor="category">Filter by Category: </label>
+              <select 
+                id="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                <option value="">All Categories</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>{category}</option>
+                ))}
+              </select>
             </div>
-            <button onClick={() => setView(addView)}>New Item</button>
+
+            {/* Search Bar in the middle */}
+            <div className="search-bar-container">
+            <input
+              type="text"
+              placeholder="Search for items or categories..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            </div>  
+
+            <button className="addItemButton" onClick={() => setView(addView)}>New Item</button>
           </div>
 
           <div className="inventory-container">
@@ -104,9 +138,18 @@ function App() {
           item={selectedItem} // Pass the selected item to SingleItemView
         />
       ) : view === addView ? (
-        <h1>Add View</h1> // Placeholder for Add View
+        <AddItemForm
+          categories={categories}
+          goToMain={() => setView(mainView)} // Function to go back to the main view
+        />
       ) : view === updateView ? (
-        <h1>Update View</h1> // Placeholder for Update View
+        <UpdateItemView 
+          goToMain={() => setView(mainView)}
+          goToSingle={() => setView(singleView)}
+          item={selectedItem}
+          url={apiURL}
+          categories={categories}
+        />
       ) : (
         <h1>Error: Invalid View</h1>
       )}
