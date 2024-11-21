@@ -50,6 +50,7 @@ const AddItemForm = ({ categories, goToMain }) => {
         alert("Item added successfully!");
         console.log("New item added:", data); // Log the new item
         goToMain(); // Navigate back to the main view
+        window.location.reload();
       } else {
         const errorData = await response.json();
         alert(`Failed to add item: ${errorData.error}`);

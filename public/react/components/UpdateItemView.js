@@ -49,6 +49,7 @@ function UpdateItemView({ goToMain, goToSingle, item , categories}) {
         alert("Item updated successfully!");
         console.log("Updated item:", data);
         goToSingle();
+        window.location.reload();
       } else {
         const errorData = await response.json();
         alert(`Failed to update item: ${errorData.error}`);
